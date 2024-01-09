@@ -2,23 +2,26 @@
 #include <vector>
 #include <algorithm>
 #include <functional>
-bool isStringLengthEven(const std::string& str) {
-    return str.length() % 2 == 0;
+
+std::function<bool(const std::string&)> isDivisibleBy(int divisor) {
+    return [divisor](const std::string& str) {
+        return str.length() % divisor == 0;
+    };
 }
 
-std::vector<std::string> search(const std::vector<std::string>& strings, std::function<bool(const std::string&)> filter) {
+std::vector<std::string> search(const std::vector<std::string>& strings, const std::function<bool(const std::string&)>& criteria) {
     std::vector<std::string> result;
     for (const std::string& str : strings) {
-        if (filter(str)) {
+        if (criteria(str)) {
             result.push_back(str);
         }
     }
     return result;
 }
 
-void printonTerminal(const std::vector<std::string>& evenStrings) {
-    std::cout << "Strings with even length: ";
-    for (const std::string& str : evenStrings) {
+void printDivisibleStrings(const std::vector<std::string>& divisibleStrings) {
+    std::cout << "Strings with length divisible by divisor: ";
+    for (const std::string& str : divisibleStrings) {
         std::cout << str << " ";
     }
     std::cout << std::endl;
@@ -26,8 +29,12 @@ void printonTerminal(const std::vector<std::string>& evenStrings) {
 
 int main() {
     std::vector<std::string> strings = {"apple", "banana", "orange", "grape", "kiwi"};
-    std::vector<std::string> evenStrings = search(strings, isStringLengthEven);
-    printEvenStrings(evenStrings);
+    auto isDivisibleBy3 = isDivisibleBy(3);
+    
+    std::vector<std::string> divisibleStrings = search(strings, isDivisibleBy3);
+    printDivisibleStrings(divisibleStrings);
+    
     return 0;
 }
+
 
