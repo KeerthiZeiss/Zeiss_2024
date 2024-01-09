@@ -2,32 +2,32 @@
 #include <vector>
 #include <algorithm>
 #include <functional>
-
-bool isEven(int num) {
-    return num % 2 == 0;
+bool isStringLengthEven(const std::string& str) {
+    return str.length() % 2 == 0;
 }
 
-std::vector<int> search(const std::vector<int>& nums, std::function<bool(int)> isEven) {
-    std::vector<int> result;
-    for (int num : nums) {
-        if (isEven(num)) {
-            result.push_back(num);
+std::vector<std::string> search(const std::vector<std::string>& strings, std::function<bool(const std::string&)> criteria) {
+    std::vector<std::string> result;
+    for (const std::string& str : strings) {
+        if (criteria(str)) {
+            result.push_back(str);
         }
     }
     return result;
 }
 
-void printevennumbers(std::vector<int> evenNumbers) { 
-    std::cout << "Even numbers: ";
-    for (int num : evenNumbers) {
-        std::cout << num << " ";
+void printEvenStrings(const std::vector<std::string>& evenStrings) {
+    std::cout << "Strings with even length: ";
+    for (const std::string& str : evenStrings) {
+        std::cout << str << " ";
     }
     std::cout << std::endl;
 }
 
 int main() {
-    std::vector<int> numbers = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-    std::vector<int> evenNumbers = search(numbers, isEven);
-    printevennumbers(evenNumbers); 
+    std::vector<std::string> strings = {"apple", "banana", "orange", "grape", "kiwi"};
+    std::vector<std::string> evenStrings = search(strings, isStringLengthEven);
+    printEvenStrings(evenStrings);
     return 0;
 }
+
