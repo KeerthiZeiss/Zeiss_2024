@@ -6,10 +6,10 @@ bool isStringLengthEven(const std::string& str) {
     return str.length() % 2 == 0;
 }
 
-std::vector<std::string> search(const std::vector<std::string>& strings, std::function<bool(const std::string&)> criteria) {
+std::vector<std::string> search(const std::vector<std::string>& strings, std::function<bool(const std::string&)> filter) {
     std::vector<std::string> result;
     for (const std::string& str : strings) {
-        if (criteria(str)) {
+        if (filter(str)) {
             result.push_back(str);
         }
     }
