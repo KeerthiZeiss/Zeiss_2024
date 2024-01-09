@@ -16,7 +16,7 @@ std::vector<std::string> search(const std::vector<std::string>& strings, std::fu
     return result;
 }
 
-void printEvenStrings(const std::vector<std::string>& evenStrings) {
+void printonTerminal(const std::vector<std::string>& evenStrings) {
     std::cout << "Strings with even length: ";
     for (const std::string& str : evenStrings) {
         std::cout << str << " ";
