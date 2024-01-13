@@ -1,28 +1,32 @@
 #include <iostream>
 #include <vector>
+
 using namespace std;
+
 class IConverter {
 public:
-   virtual void convertHeader(const string& content) = 0;
-virtual void convertFooter(const string& content) =0;
-virtual void convertParagraph(const string& content) = 0;
-virtual void convertHyperlink(const string& content, const string& url) = 0;
+    virtual void convertHeader(const string& content) = 0;
+    virtual void convertFooter(const string& content) = 0;
+    virtual void convertParagraph(const string& content) = 0;
+    virtual void convertHyperlink(const string& content, const string& url) = 0;
 };
+
 class HTMLConverter : public IConverter {
 public:
-    void convertHeader(const string& content)  {
+    void convertHeader(const string& content) override {
         cout << "<h1>" << content << "</h1>\n";
     }
-    void convertFooter(const string& content)  {
+    void convertFooter(const string& content) override {
         cout << "<footer>" << content << "</footer>\n";
     }
-    void convertParagraph(const string& content)  {
+    void convertParagraph(const string& content) override {
         cout << "<p>" << content << "</p>\n";
     }
-    void convertHyperlink(const string& content, const string& url) {
+    void convertHyperlink(const string& content, const string& url) override {
         cout << "<a href=\"" << url << "\">" << content << "</a>\n";
     }
 };
+
 class DocumentPart {
 public:
     DocumentPart(string name, int position) : name(name), position(position) {}
@@ -34,78 +38,82 @@ protected:
     string name;
     int position;
 };
+
 class Header : public DocumentPart {
 public:
     Header(string name, int position) : DocumentPart(name, position) {}
 
     void paint() override {
-        cout << "Painting Header" <<endl;
+        cout << "Painting Header" << endl;
     }
 
     void save() override {
-        cout << "Saving Header" <<endl;
+        cout << "Saving Header" << endl;
     }
-    void construct(IConverter& converter)  {
-        converter.convertHeader(this->name);
+    void construct(IConverter& converter) override {
+        converter.convertHeader(name);
     }
 };
+
 class Footer : public DocumentPart {
 public:
     Footer(string name, int position) : DocumentPart(name, position) {}
 
     void paint() override {
-        cout << "Painting Footer" <<endl;
+        cout << "Painting Footer" << endl;
     }
 
     void save() override {
-        cout << "Saving Footer" <<endl;
+        cout << "Saving Footer" << endl;
     }
-    void construct(IConverter& converter) {
-        converter.convertFooter(this->name);
+    void construct(IConverter& converter) override {
+        converter.convertFooter(name);
     }
 };
+
 class Paragraph : public DocumentPart {
 public:
     Paragraph(string name, int position) : DocumentPart(name, position) {}
 
     void paint() override {
-       cout << "Painting Paragraph" <<endl;
+        cout << "Painting Paragraph" << endl;
     }
 
     void save() override {
-        cout << "Saving Paragraph" <<endl;
+        cout << "Saving Paragraph" << endl;
     }
-    void construct(IConverter& converter) {
-        converter.convertParagraph(this->name);
+    void construct(IConverter& converter) override {
+        converter.convertParagraph(name);
     }
 };
+
 class Hyperlink : public DocumentPart {
 public:
-    Hyperlink(string name, int position,string url) : DocumentPart(name, position), url(url) {}
+    Hyperlink(string name, int position, string url) : DocumentPart(name, position), url(url) {}
 
     void paint() override {
-        std::cout << "Painting Hyperlink" << std::endl;
+        cout << "Painting Hyperlink" << endl;
     }
 
     void save() override {
-        std::cout << "Saving Hyperlink" << std::endl;
+        cout << "Saving Hyperlink" << endl;
     }
-    void construct(IConverter& converter){
-        converter.convertHyperlink(this->name, this->url);
+    void construct(IConverter& converter) override {
+        converter.convertHyperlink(name, url);
     }
 
 private:
-    std::string url;
+    string url;
 };
 
 class HTMLDocument {
 public:
     void open() {
-        std::cout << "<!DOCTYPE html>\n<html>\n<head>\n<title>Converted Word Document</title>\n</head>\n<body>\n";
+        cout << "<!DOCTYPE html>\n<html>\n<head>\n<title>Converted Word Document</title>\n</head>\n<body>\n";
     }
 
     void save() {
-        std::cout << "</body>\n</html>" << std::endl;
+        cout << "</body>\n</html>" << endl;
     }
 };
 
@@ -123,8 +131,8 @@ int main() {
     paragraph.construct(htmlConverter);
     hyperlink.construct(htmlConverter);
 
-    
     convertedDocument.save();
 
     return 0;
 }
+
