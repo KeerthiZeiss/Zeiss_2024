@@ -2,29 +2,27 @@
 #include <vector>
 #include <algorithm>
 
-class Thread;
-
 class IObserver {
 public:
-   virtual void update(Thread* thread, int threadId) = 0;
+    virtual void update(std::string state) = 0;
 };
 
 class Thread {
     int id;
     std::string state;
-    int priority;
-    int culture;
     std::vector<IObserver*> observers;
+
     void notifyObservers() {
         for (auto observer : observers) {
-            observer->update(this,id);
+            observer->update(state);
         }
     }
 
 public:
- void setId(int threadId) {
+    void setId(int threadId) {
         id = threadId;
     }
+
     void start() {
         state = "starting";
         notifyObservers();
@@ -53,6 +51,7 @@ public:
     std::string getState() const {
         return state;
     }
+
     void subscribe(IObserver* observer) {
         observers.push_back(observer);
     }
@@ -60,23 +59,28 @@ public:
     void unsubscribe(IObserver* observer) {
         observers.erase(std::remove(observers.begin(), observers.end(), observer), observers.end());
     }
+
     int getId() const {
         return id;
     }
 };
+
 class ConcreteObserver : public IObserver {
+    int threadId;  // Added member variable to store threadId
 public:
-    void update(Thread* thread, int threadId) override {
-        std::cout << "Thread " << threadId << " has been updated. New state: " << thread->getState() << std::endl;
+    ConcreteObserver(int id) : threadId(id) {}
+
+    void update(std::string state) override {
+        std::cout << "Thread " << threadId << " has been updated. New state: " << state << std::endl;
     }
 };
 
 int main() {
-   Thread myThread;
-    myThread.setId(1); 
+    Thread myThread;
+    myThread.setId(1);
 
-    ConcreteObserver observer1;
-    ConcreteObserver observer2;
+    ConcreteObserver observer1(myThread.getId());
+    ConcreteObserver observer2(myThread.getId());
 
     myThread.subscribe(&observer1);
     myThread.subscribe(&observer2);
