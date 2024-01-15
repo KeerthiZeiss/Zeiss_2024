@@ -66,7 +66,7 @@ public:
 };
 
 class ConcreteObserver : public IObserver {
-    int threadId;  // Added member variable to store threadId
+    int threadId;  
 public:
     ConcreteObserver(int id) : threadId(id) {}
 
