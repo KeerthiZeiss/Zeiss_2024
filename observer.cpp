@@ -66,7 +66,7 @@ public:
 };
 
 class ConcreteObserver : public IObserver {
-    int threadId;  
+    int threadId;  // Added member variable to store threadId
 public:
     ConcreteObserver(int id) : threadId(id) {}
 
@@ -79,16 +79,14 @@ int main() {
     Thread myThread;
     myThread.setId(1);
 
-    ConcreteObserver observer1(myThread.getId());
-    ConcreteObserver observer2(myThread.getId());
+    ConcreteObserver observer(myThread.getId());
 
-    myThread.subscribe(&observer1);
-    myThread.subscribe(&observer2);
+    myThread.subscribe(&observer);
 
     myThread.start();
     myThread.sleep();
 
-    myThread.unsubscribe(&observer1);
+    myThread.unsubscribe(&observer);
 
     myThread.abort();
 
